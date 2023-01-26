@@ -157,11 +157,11 @@ variable "network_policy" {
 }
 
 variable "dns_service_ip" {
-
+  default = ""
 }
 
 variable "docker_bridge_cidr" {
-
+   default = ""
 }
 
 variable "outbound_type" {
@@ -169,11 +169,11 @@ variable "outbound_type" {
 }
 
 variable "pod_cidr" {
-  default = null
+  default = ""
 }
 
 variable "service_cidr" {
-  default = null
+  default = ""
 }
 
 variable "tags" {
