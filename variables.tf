@@ -21,6 +21,10 @@ variable "subnet_name" {
   type = string
 }
 
+variable "acr_subnet_name" {
+
+}
+
 variable "location" {
   type = string
 }
