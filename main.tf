@@ -1,9 +1,29 @@
+module "acr" {
+  source               = ".//acr-module"
+  acr_name             = var.acr_name
+  resource_group_name  = var.resource_group_name
+  location             = var.location
+  virtual_network_name = var.virtual_network_name
+  acr_subnet_name      = var.acr_subnet_name
+  private_zone_id      = var.private_zone_id
+}
+
+module "kv" {
+  source               = ".//kv-module"
+  key_vault_name       = var.key_vault_name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = var.virtual_network_name
+  acr_subnet_name      = var.acr_subnet_name
+  private_zone_id      = var.private_zone_id
+  tenant_id            = var.tenant_id
+}
+
 module "aks" {
   source               = ".//aks-module"
-  depends_on = [module.acr, module.kv]
+  depends_on           = [module.acr, module.kv]
   aks_name             = var.aks_name
   resource_group_name  = var.resource_group_name
-  location             = "East US 2"
+  location             = "East US"
   virtual_network_name = var.virtual_network_name
   subnet_name          = var.subnet_name
   dns_prefix           = var.dns_prefix
@@ -13,9 +33,9 @@ module "aks" {
   docker_bridge_cidr   = var.docker_bridge_cidr
   enable_oms_agent     = false
   log_workspace_id     = var.log_workspace_id
-  key_vault_rg_name = var.resource_group_name
-  acr_rg_name = var.resource_group_name
-  acr_name = var.acr_name
-  key_vault_name = var.key_vault_name
+  key_vault_rg_name    = var.resource_group_name
+  acr_rg_name          = var.resource_group_name
+  acr_name             = var.acr_name
+  key_vault_name       = var.key_vault_name
   private_zone_id      = var.private_zone_id
 }
