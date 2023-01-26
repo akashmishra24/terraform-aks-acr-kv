@@ -12,7 +12,7 @@ tags = {
 }
 linux_profile = {
   admin_username   = "aksadmin"
-  admin_public_key =  "{{ secrets.SSH_KEY }}" # "./1674728051_3151686.pub"
+  admin_public_key =  "./1674728051_3151686.pub"
 }
 acr_subnet_name    = "subnet-1"
 dns_service_ip     = "10.0.0.10"
