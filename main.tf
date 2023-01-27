@@ -40,5 +40,5 @@ module "aks" {
   private_zone_id      = var.private_zone_id
   linux_admin_username = var.linux_admin_username
   linux_ssh_key = var.linux_ssh_key
-  user_assigned_mi = ["a7f86a9f-b804-4844-8980-652cd145b25b"]
+  user_assigned_mi = ["/subscriptions/7b5c7d11-8bc3-4105-9c6f-41222b38b95f/resourceGroups/rg-iac-cox-poc-01/providers/Microsoft.ManagedIdentity/userAssignedIdentities/iac-cox-poc-mi-01"]
 }
