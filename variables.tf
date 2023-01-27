@@ -161,15 +161,15 @@ variable "network_policy" {
 }
 
 variable "dns_service_ip" {
-
+ default = null
 }
 
 variable "docker_bridge_cidr" {
-
+ default = null
 }
 
 variable "outbound_type" {
-  default = null
+  default = "loadBalancer"
 }
 
 variable "pod_cidr" {
@@ -216,7 +216,7 @@ variable "linux_admin_username" {
 }
 
 variable "linux_ssh_key" {
-  default = "C:/Users/2000087814/tf-module-vm-test/ssh-public-key.pub"
+
 }
 
 variable "key_vault_secrets_provider" {
