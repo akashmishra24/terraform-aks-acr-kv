@@ -78,7 +78,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   private_dns_zone_id                 = var.private_zone_id # var.private_cluster_enabled == true ? azurerm_private_dns_zone.aks_dns.0.id : null
   azure_policy_enabled                = false
   http_application_routing_enabled    = false
-  role_based_access_control_enabled   = false
+  role_based_access_control_enabled   = true
   private_cluster_public_fqdn_enabled = false
   public_network_access_enabled       = false # var.public_network_access_enabled
 
