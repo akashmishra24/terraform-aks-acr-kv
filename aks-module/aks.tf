@@ -165,7 +165,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     docker_bridge_cidr = "172.17.0.1/16"
 #     outbound_type      = var.outbound_type
 #     pod_cidr           = var.pod_cidr
-    service_cidr       = "192.168.100.0/16"
+    service_cidr       = "192.168.0.0/16"
   }
 
 #   oms_agent {
