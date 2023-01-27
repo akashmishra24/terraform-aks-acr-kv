@@ -102,12 +102,12 @@ resource "azurerm_kubernetes_cluster" "this" {
     tags                   = var.tags
   }
 
-  linux_profile {
-    admin_username = var.linux_admin_username
-    ssh_key {
-      key_data = var.linux_ssh_key
-    }
-  }
+#   linux_profile {
+#     admin_username = var.linux_admin_username
+#     ssh_key {
+#       key_data = var.linux_ssh_key
+#     }
+#   }
 
   # dynamic "windows_profile" {
   #   for_each = var.windows_profile
