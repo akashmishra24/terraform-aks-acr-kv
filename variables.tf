@@ -206,7 +206,6 @@ variable "aks_http_proxy_settings" {
 }
 
 variable "user_assigned_mi" {
-  type    = set(string)
   default = "a7f86a9f-b804-4844-8980-652cd145b25b"
 }
 
