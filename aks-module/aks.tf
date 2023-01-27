@@ -124,21 +124,21 @@ resource "azurerm_kubernetes_cluster" "this" {
   # }
   # Either of 'Service Principal' or 'Identity' can exist at a time
 
-#   identity {
-#     type         = var.user_assigned_mi == null ? "SystemAssigned" : "UserAssigned"
-#     identity_ids = var.user_assigned_mi == null ? null : var.user_assigned_mi
-#   }
-  
-    identity {
-    type         = "SystemAssigned"
+  identity {
+    type         = var.user_assigned_mi == null ? "SystemAssigned" : "UserAssigned"
+    identity_ids = var.user_assigned_mi == null ? null : var.user_assigned_mi
   }
-
-#   azure_active_directory_role_based_access_control {
-#     managed                = true
-#     tenant_id              = var.tenant_id
-#     azure_rbac_enabled     = true
-#     admin_group_object_ids = var.admin_group_object_ids
+  
+#     identity {
+#     type         = "SystemAssigned"
 #   }
+
+  azure_active_directory_role_based_access_control {
+    managed                = true
+    tenant_id              = var.tenant_id
+    azure_rbac_enabled     = true
+    admin_group_object_ids = var.admin_group_object_ids
+  }
 
 #   dynamic "ingress_application_gateway" {
 #     for_each = var.ingress_application_gateway
