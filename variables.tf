@@ -206,7 +206,7 @@ variable "aks_http_proxy_settings" {
 }
 
 variable "user_assigned_mi" {
-  default = "a7f86a9f-b804-4844-8980-652cd145b25b"
+  default = "[/subscriptions/7b5c7d11-8bc3-4105-9c6f-41222b38b95f/resourcegroups/rg-iac-cox-poc-01/providers/Microsoft.ManagedIdentity/userAssignedIdentities/iac-cox-poc-mi-01"]
 }
 
 variable "linux_admin_username" {
