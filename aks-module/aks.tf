@@ -159,13 +159,13 @@ resource "azurerm_kubernetes_cluster" "this" {
 #   }
 
   network_profile {
-    network_plugin     = var.network_plugin
-    network_policy     = var.network_policy
-    dns_service_ip     = var.dns_service_ip
-    docker_bridge_cidr = var.docker_bridge_cidr
-    outbound_type      = var.outbound_type
+    network_plugin     = "azure"
+    network_policy     = "azure"
+    dns_service_ip     = "192.168.100.10"
+    docker_bridge_cidr = "172.17.0.1/16"
+#     outbound_type      = var.outbound_type
 #     pod_cidr           = var.pod_cidr
-    service_cidr       = var.service_cidr
+    service_cidr       = "192.168.100.0/16"
   }
 
 #   oms_agent {
