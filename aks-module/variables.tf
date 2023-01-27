@@ -72,7 +72,7 @@ variable "default_node_pool_node_count" {
 
 variable "default_node_pool_availability_zones" {
   description = "Specifies the availability zones of the default node pool" # ["1", "2", "3", "None"]
-  default     = ["None"]
+  default     = null
   type        = list(string)
 }
 
