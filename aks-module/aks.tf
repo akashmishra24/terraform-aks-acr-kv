@@ -161,7 +161,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     dns_service_ip     = var.dns_service_ip
     docker_bridge_cidr = var.docker_bridge_cidr
     outbound_type      = var.outbound_type
-    pod_cidr           = var.pod_cidr
+#     pod_cidr           = var.pod_cidr
     service_cidr       = var.service_cidr
   }
 
