@@ -157,7 +157,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   network_profile {
     network_plugin     = var.network_plugin
     network_policy     = var.network_policy
-    network_mode = "transparent"
+#     network_mode = "transparent"
     dns_service_ip     = var.dns_service_ip
     docker_bridge_cidr = var.docker_bridge_cidr
     outbound_type      = var.outbound_type
