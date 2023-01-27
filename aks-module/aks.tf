@@ -210,16 +210,16 @@ resource "azurerm_kubernetes_cluster" "this" {
   tags = var.tags
 }
 
-resource "azurerm_role_assignment" "aks_kv_role" {
-  scope                            = data.azurerm_key_vault.kv.id
-  role_definition_name             = "Reader"
-  principal_id                     = azurerm_kubernetes_cluster.this.identity.0.principal_id
-  skip_service_principal_aad_check = true
-}
+# resource "azurerm_role_assignment" "aks_kv_role" {
+#   scope                            = data.azurerm_key_vault.kv.id
+#   role_definition_name             = "Reader"
+#   principal_id                     = azurerm_kubernetes_cluster.this.identity.0.principal_id
+#   skip_service_principal_aad_check = true
+# }
 
-resource "azurerm_role_assignment" "aks_acr_role" {
-  scope                            = data.azurerm_container_registry.acr.id
-  role_definition_name             = "AcrPull"
-  principal_id                     = azurerm_kubernetes_cluster.this.identity.0.principal_id
-  skip_service_principal_aad_check = true
-}
+# resource "azurerm_role_assignment" "aks_acr_role" {
+#   scope                            = data.azurerm_container_registry.acr.id
+#   role_definition_name             = "AcrPull"
+#   principal_id                     = azurerm_kubernetes_cluster.this.identity.0.principal_id
+#   skip_service_principal_aad_check = true
+# }
