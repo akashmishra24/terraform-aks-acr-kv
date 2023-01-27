@@ -23,18 +23,18 @@ data "azurerm_container_registry" "acr" {
   resource_group_name = var.acr_rg_name
 }
 
-# resource "azurerm_private_dns_zone" "aks_dns" {
-#   count               = var.private_cluster_enabled == true ? 1 : 0
-#   name                = "akspoc.com"
-#   resource_group_name = data.azurerm_resource_group.rg.name
-# }
+resource "azurerm_private_dns_zone" "aks_dns" {
+  count               = var.private_cluster_enabled == true ? 1 : 0
+  name                = "private.eastus.azmk8s.io"
+  resource_group_name = data.azurerm_resource_group.rg.name
+}
 
-# resource "azurerm_private_dns_zone_virtual_network_link" "hub_aks" {
-#   name                  = "hub_to_aks"
-#   resource_group_name   = data.azurerm_resource_group.rg.name
-#   private_dns_zone_name = azurerm_private_dns_zone.aks_dns[0].name
-#   virtual_network_id    = data.azurerm_virtual_network.vnet.id
-# }
+resource "azurerm_private_dns_zone_virtual_network_link" "hub_aks" {
+  name                  = "hub_to_aks"
+  resource_group_name   = data.azurerm_resource_group.rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.aks_dns[0].name
+  virtual_network_id    = data.azurerm_virtual_network.vnet.id
+}
 
 resource "azurerm_private_dns_zone_virtual_network_link" "aks_dns" {
   name                  = "aks-dns"
@@ -102,12 +102,12 @@ resource "azurerm_kubernetes_cluster" "this" {
     tags                   = var.tags
   }
 
-#   linux_profile {
-#     admin_username = var.linux_admin_username
-#     ssh_key {
-#       key_data = var.linux_ssh_key
-#     }
-#   }
+  linux_profile {
+    admin_username = var.linux_admin_username
+    ssh_key {
+      key_data = var.linux_ssh_key
+    }
+  }
 
   # dynamic "windows_profile" {
   #   for_each = var.windows_profile
@@ -128,10 +128,6 @@ resource "azurerm_kubernetes_cluster" "this" {
     type         = var.user_assigned_mi == null ? "SystemAssigned" : "UserAssigned"
     identity_ids = var.user_assigned_mi == null ? null : var.user_assigned_mi
   }
-  
-#     identity {
-#     type         = "SystemAssigned"
-#   }
 
   azure_active_directory_role_based_access_control {
     managed                = true
@@ -140,89 +136,89 @@ resource "azurerm_kubernetes_cluster" "this" {
     admin_group_object_ids = var.admin_group_object_ids
   }
 
-#   dynamic "ingress_application_gateway" {
-#     for_each = var.ingress_application_gateway
-#     content {
-#       gateway_id   = lookup(var.ingress_application_gateway, "gateway_id", null)
-#       gateway_name = lookup(var.ingress_application_gateway, "gateway_name", null)
-#       subnet_cidr  = lookup(var.ingress_application_gateway, "subnet_cidr", null)
-#       subnet_id    = lookup(var.ingress_application_gateway, "subnet_id", null)
-#     }
-#   }
+  dynamic "ingress_application_gateway" {
+    for_each = var.ingress_application_gateway
+    content {
+      gateway_id   = lookup(var.ingress_application_gateway, "gateway_id", null)
+      gateway_name = lookup(var.ingress_application_gateway, "gateway_name", null)
+      subnet_cidr  = lookup(var.ingress_application_gateway, "subnet_cidr", null)
+      subnet_id    = lookup(var.ingress_application_gateway, "subnet_id", null)
+    }
+  }
 
-#   dynamic "key_vault_secrets_provider" {
-#     for_each = var.key_vault_secrets_provider
-#     content {
-#       secret_rotation_enabled  = key_vault_secrets_provider.value.secret_rotation_enabled
-#       secret_rotation_interval = key_vault_secrets_provider.value.secret_rotation_interval
-#     }
-#   }
+  dynamic "key_vault_secrets_provider" {
+    for_each = var.key_vault_secrets_provider
+    content {
+      secret_rotation_enabled  = key_vault_secrets_provider.value.secret_rotation_enabled
+      secret_rotation_interval = key_vault_secrets_provider.value.secret_rotation_interval
+    }
+  }
 
   network_profile {
     network_plugin     = "azure"
     network_policy     = "azure"
     dns_service_ip     = "192.168.100.10"
     docker_bridge_cidr = "172.17.0.1/16"
-#     outbound_type      = var.outbound_type
-#     pod_cidr           = var.pod_cidr
+    outbound_type      = var.outbound_type
+    pod_cidr           = var.pod_cidr
     service_cidr       = "192.168.0.0/16"
   }
 
-#   oms_agent {
-#     log_analytics_workspace_id = var.log_workspace_id
-#   }
+  oms_agent {
+    log_analytics_workspace_id = var.log_workspace_id
+  }
 
-#   dynamic "http_proxy_config" {
-#     for_each = var.aks_http_proxy_settings
-#     content {
-#       http_proxy  = var.aks_http_proxy_settings.http_proxy_url
-#       https_proxy = var.aks_http_proxy_settings.https_proxy_url
-#       no_proxy    = var.aks_http_proxy_settings.no_proxy_url_list
-#       trusted_ca  = var.aks_http_proxy_settings.trusted_ca
-#     }
-#   }
+  dynamic "http_proxy_config" {
+    for_each = var.aks_http_proxy_settings
+    content {
+      http_proxy  = var.aks_http_proxy_settings.http_proxy_url
+      https_proxy = var.aks_http_proxy_settings.https_proxy_url
+      no_proxy    = var.aks_http_proxy_settings.no_proxy_url_list
+      trusted_ca  = var.aks_http_proxy_settings.trusted_ca
+    }
+  }
 
-#   dynamic "auto_scaler_profile" {
-#     for_each = var.auto_scaler_profile
-#     content {
-#       balance_similar_node_groups      = auto_scaler_profile.value.balance_similar_node_groups
-#       expander                         = auto_scaler_profile.value.expander
-#       max_graceful_termination_sec     = auto_scaler_profile.value.max_graceful_termination_sec
-#       max_node_provisioning_time       = auto_scaler_profile.value.max_node_provisioning_time
-#       max_unready_nodes                = auto_scaler_profile.value.max_unready_nodes
-#       max_unready_percentage           = auto_scaler_profile.value.max_unready_percentage
-#       new_pod_scale_up_delay           = auto_scaler_profile.value.new_pod_scale_up_delay
-#       scale_down_delay_after_add       = auto_scaler_profile.value.scale_down_delay_after_add
-#       scale_down_delay_after_delete    = auto_scaler_profile.value.scale_down_delay_after_delete
-#       scale_down_delay_after_failure   = auto_scaler_profile.value.scale_down_delay_after_failure
-#       scan_interval                    = auto_scaler_profile.value.scan_interval
-#       scale_down_unneeded              = auto_scaler_profile.value.scale_down_unneeded
-#       scale_down_unready               = auto_scaler_profile.value.scale_down_unready
-#       scale_down_utilization_threshold = auto_scaler_profile.value.scale_down_utilization_threshold
-#       empty_bulk_delete_max            = auto_scaler_profile.value.empty_bulk_delete_max
-#       skip_nodes_with_local_storage    = auto_scaler_profile.value.skip_nodes_with_local_storage
-#       skip_nodes_with_system_pods      = auto_scaler_profile.value.skip_nodes_with_system_pods
-#     }
-#   }
+  dynamic "auto_scaler_profile" {
+    for_each = var.auto_scaler_profile
+    content {
+      balance_similar_node_groups      = auto_scaler_profile.value.balance_similar_node_groups
+      expander                         = auto_scaler_profile.value.expander
+      max_graceful_termination_sec     = auto_scaler_profile.value.max_graceful_termination_sec
+      max_node_provisioning_time       = auto_scaler_profile.value.max_node_provisioning_time
+      max_unready_nodes                = auto_scaler_profile.value.max_unready_nodes
+      max_unready_percentage           = auto_scaler_profile.value.max_unready_percentage
+      new_pod_scale_up_delay           = auto_scaler_profile.value.new_pod_scale_up_delay
+      scale_down_delay_after_add       = auto_scaler_profile.value.scale_down_delay_after_add
+      scale_down_delay_after_delete    = auto_scaler_profile.value.scale_down_delay_after_delete
+      scale_down_delay_after_failure   = auto_scaler_profile.value.scale_down_delay_after_failure
+      scan_interval                    = auto_scaler_profile.value.scan_interval
+      scale_down_unneeded              = auto_scaler_profile.value.scale_down_unneeded
+      scale_down_unready               = auto_scaler_profile.value.scale_down_unready
+      scale_down_utilization_threshold = auto_scaler_profile.value.scale_down_utilization_threshold
+      empty_bulk_delete_max            = auto_scaler_profile.value.empty_bulk_delete_max
+      skip_nodes_with_local_storage    = auto_scaler_profile.value.skip_nodes_with_local_storage
+      skip_nodes_with_system_pods      = auto_scaler_profile.value.skip_nodes_with_system_pods
+    }
+  }
 
-  # api_server_access_profile {
-  #     authorized_ip_ranges     = var.public_network_access_enabled == true ? ["0.0.0.0/32"] : null
-  #     subnet_id                = var.public_network_access_enabled == true ? var.subnet_id : null
-  #     vnet_integration_enabled = var.public_network_access_enabled == true ? var.vnet_integration_enabled : null
-  #   }
+  api_server_access_profile {
+      authorized_ip_ranges     = var.public_network_access_enabled == true ? ["0.0.0.0/32"] : null
+      subnet_id                = var.public_network_access_enabled == true ? var.subnet_id : null
+      vnet_integration_enabled = var.public_network_access_enabled == true ? var.vnet_integration_enabled : null
+    }
   tags = var.tags
 }
 
-# resource "azurerm_role_assignment" "aks_kv_role" {
-#   scope                            = data.azurerm_key_vault.kv.id
-#   role_definition_name             = "Reader"
-#   principal_id                     = azurerm_kubernetes_cluster.this.identity.0.principal_id
-#   skip_service_principal_aad_check = true
-# }
+resource "azurerm_role_assignment" "aks_kv_role" {
+  scope                            = data.azurerm_key_vault.kv.id
+  role_definition_name             = "Reader"
+  principal_id                     = azurerm_kubernetes_cluster.this.identity.0.principal_id
+  skip_service_principal_aad_check = true
+}
 
-# resource "azurerm_role_assignment" "aks_acr_role" {
-#   scope                            = data.azurerm_container_registry.acr.id
-#   role_definition_name             = "AcrPull"
-#   principal_id                     = azurerm_kubernetes_cluster.this.identity.0.principal_id
-#   skip_service_principal_aad_check = true
-# }
+resource "azurerm_role_assignment" "aks_acr_role" {
+  scope                            = data.azurerm_container_registry.acr.id
+  role_definition_name             = "AcrPull"
+  principal_id                     = azurerm_kubernetes_cluster.this.identity.0.principal_id
+  skip_service_principal_aad_check = true
+}
