@@ -43,7 +43,6 @@ variable "kubernetes_version" {
 
 variable "sku_tier" {
   type    = string
-  default = "Free"
 }
 
 variable "private_cluster_enabled" {
