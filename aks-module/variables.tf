@@ -201,8 +201,6 @@ variable "aks_http_proxy_settings" {
 }
 
 variable "user_assigned_mi" {
-  type    = set(string)
-  default = null
 }
 
 variable "linux_admin_username" {
