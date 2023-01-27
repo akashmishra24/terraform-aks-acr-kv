@@ -40,5 +40,5 @@ module "aks" {
   private_zone_id      = var.private_zone_id
   linux_admin_username = var.linux_admin_username
   linux_ssh_key = var.linux_ssh_key
-  user_assigned_mi = "a7f86a9f-b804-4844-8980-652cd145b25b"
+  user_assigned_mi = ["a7f86a9f-b804-4844-8980-652cd145b25b"]
 }
