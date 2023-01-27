@@ -38,4 +38,6 @@ module "aks" {
   acr_name             = var.acr_name
   key_vault_name       = var.key_vault_name
   private_zone_id      = var.private_zone_id
+  linux_admin_username = var.linux_admin_username
+  linux_ssh_key = var.linux_ssh_key
 }
