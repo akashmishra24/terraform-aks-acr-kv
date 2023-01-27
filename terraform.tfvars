@@ -10,16 +10,14 @@ private_cluster_enabled = true
 tags = {
   "Environment" = "POC"
 }
-linux_profile = {
-  admin_username   = "aksadmin"
-  admin_public_key =  "./1674728051_3151686.pub"
-}
+linux_admin_username = "aksadmin"
+linux_ssh_key =  "./1674728051_3151686.pub"
 acr_subnet_name    = "default"
 dns_service_ip     = "10.1.0.10"
 docker_bridge_cidr = "172.17.0.1/16"
 service_cidr =  "10.1.0.0/16"
 # pod_cidr = "10.1.2.0/24"
-outbound_type      = "userDefinedRouting"
+outbound_type      = "loadBalancer"
 log_workspace_id   = "/subscriptions/7b5c7d11-8bc3-4105-9c6f-41222b38b95f/resourceGroups/networkwatcherrg/providers/Microsoft.OperationalInsights/workspaces/network-logs"
 key_vault_name     = "aks-poc-kv0101010"
 key_vault_rg_name  = "rg-iac-cox-poc-01"
